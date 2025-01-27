@@ -1,0 +1,108 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+struct Task {
+    string description;
+    bool isCompleted;
+};
+
+vector<Task> tasks;
+void addTask() {
+    string taskDescription;
+    cout << "Enter task description: ";
+    cin.ignore(); // To clear any leftover input
+    getline(cin, taskDescription);
+    tasks.push_back({taskDescription, false});
+    cout << "Task added successfully!" << endl;
+}
+void viewTasks() {
+    if (tasks.empty()) {
+        cout << "No tasks available." << endl;
+        return;
+    }
+    for (size_t i = 0; i < tasks.size(); ++i) {
+        cout << i + 1 << ". " << tasks[i].description;
+        if (tasks[i].isCompleted) {
+            cout << " [Completed]";
+        } else {
+            cout << " [Pending]";
+        }
+        cout << endl;
+    }
+}
+
+void markTaskCompleted() {
+    if (tasks.empty()) {
+        cout << "No tasks available to mark as completed." << endl;
+        return;
+    }
+    cout << "Select a task to mark as completed:" << endl;
+    viewTasks();
+
+    int taskNumber;
+    cout << "Enter the task number to mark as completed: ";
+    cin >> taskNumber;
+    
+    if (taskNumber < 1 || taskNumber > tasks.size()) {
+        cout << "Invalid task number!" << endl;
+        return;
+    }
+    tasks[taskNumber - 1].isCompleted = true;
+    cout << "Task marked as completed!" << endl;
+}
+void removeTask() {
+    if (tasks.empty()) {
+        cout << "No tasks available to remove." << endl;
+        return;
+    }
+    cout << "Select a task to remove:" << endl;
+    viewTasks();
+
+    int taskNumber;
+    cout << "Enter the task number to remove: ";
+    cin >> taskNumber;
+
+    if (taskNumber < 1 || taskNumber > tasks.size()) {
+        cout << "Invalid task number!" << endl;
+        return;
+    }
+    tasks.erase(tasks.begin() + taskNumber - 1);
+    cout << "Task removed successfully!" << endl;
+}
+
+int main() {
+    int choice;
+    
+    while (true) {
+        cout << "\nTo-Do List Manager\n";
+        cout << "1. Add Task\n";
+        cout << "2. View Tasks\n";
+        cout << "3. Mark Task as Completed\n";
+        cout << "4. Remove Task\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                addTask();
+                break;
+            case 2:
+                viewTasks();
+                break;
+            case 3:
+                markTaskCompleted();
+                break;
+            case 4:
+                removeTask();
+                break;
+            case 5:
+                cout << "Exiting program..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+}
